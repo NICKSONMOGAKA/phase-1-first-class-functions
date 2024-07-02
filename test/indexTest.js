@@ -1,49 +1,39 @@
-require ( './helpers.js' );
+const { expect } = require('chai');
+const { receivesAFunction, returnsANamedFunction, returnsAnAnonymousFunction } = require('../index.js');
 
-const chai = require("chai");
-const spies = require("chai-spies");
-chai.use(spies);
-
-describe("index", () => {
-  describe("receivesAFunction(callback)", () => {
-    it("receives a function and calls it", () => {
-      const spy = chai.spy();
-
-      receivesAFunction(spy);
-
-      expect(spy).to.have.been.called();
+describe('index', () => {
+  describe('receivesAFunction(callback)', () => {
+    it('receives a function and calls it', () => {
+      let called = false;
+      const callback = () => {
+        called = true;
+      };
+      receivesAFunction(callback);
+      expect(called).to.be.true;
     });
   });
 
-  describe("returnsANamedFunction()", () => {
-    var fn;
-
+  describe('returnsANamedFunction()', () => {
+    let namedFunction;
     before(() => {
-      fn = returnsANamedFunction();
+      namedFunction = returnsANamedFunction();
     });
 
-    it("returns a function", () => {
-      expect(fn).to.be.a("function");
-    });
-
-    it("returns a named function", () => {
-      expect(fn.name).not.to.eql("");
+    it('returns a named function', () => {
+      expect(namedFunction).to.be.a('function');
+      expect(namedFunction()).to.equal('I am a named function!');
     });
   });
 
-  describe("returnsAnAnonymousFunction()", () => {
-    var fn;
-
+  describe('returnsAnAnonymousFunction()', () => {
+    let anonymousFunction;
     before(() => {
-      fn = returnsAnAnonymousFunction();
+      anonymousFunction = returnsAnAnonymousFunction();
     });
 
-    it("returns a function", () => {
-      expect(fn).to.be.a("function");
-    });
-
-    it("returns an anonymous function", () => {
-      expect(fn.name).to.eql("");
+    it('returns an anonymous function', () => {
+      expect(anonymousFunction).to.be.a('function');
+      expect(anonymousFunction()).to.equal('I am an anonymous function!');
     });
   });
 });
